@@ -1,14 +1,18 @@
 # todo
 
-TODO: Write a description here
+Todo list in console
 
 ## Installation
 
-TODO: Write installation instructions here
+    make
 
 ## Usage
 
-TODO: Write usage instructions here
+    todo # list the tasks
+    todo -l listX # list (-l = list selection) the tasks of a list
+    todo --rm ID # remove a task
+    todo --date DATE an example of content for a task # add a new task
+
 
 ## Development
 
