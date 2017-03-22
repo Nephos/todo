@@ -25,8 +25,13 @@ end
 Dir.mkdir_p(dir_name)
 mode ||= :list
 
+private def copy_task(task, list_to)
+  list_to << task
+  list_to.save
+end
+
 # new list
-list = List.new(list_name)
+list = List.new(list_name, dir_name)
 list.load(dir_name)
 
 # effect
@@ -48,9 +53,7 @@ elsif mode == :update
   puts "Update: #{id}"
 elsif mode == :archive
   todo = list[id]
-  archives = List.new("archive")
-  archives << todo
-  archives.save
+  copy_task(todo, List.new("archives", dir_name).load)
   list.rm(id)
   puts "Archive: #{id}"
 else
