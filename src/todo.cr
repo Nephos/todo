@@ -48,7 +48,7 @@ elsif mode == :rm
   list.rm(id)
   puts "Remove: #{id}"
 elsif mode == :update
-  list[id].msg = msg
+  list[id].msg = msg unless msg.empty?
   list[id].date = date
   puts "Update: #{id}"
 elsif mode == :archive
