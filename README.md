@@ -1,6 +1,6 @@
 # todo
 
-Todo list in console
+write task in your terminal
 
 ## Installation
 
@@ -12,6 +12,17 @@ Todo list in console
     todo -l listX # list (-l = list selection) the tasks of a list
     todo --rm ID # remove a task
     todo --date DATE an example of content for a task # add a new task
+
+    Usage: todo [arguments]
+        -a=ID, --archive=ID              Move to archive
+        -u=ID, --update=ID               Update the task ID
+        -r=ID, --remove=ID               Delete the task ID
+        -l=NAME, --list=NAME             Filter with the list NAME
+        -d=DATE, --date=DATE             Set the date
+        -s, --sort                       Sort by date (by default)
+        -i, --sort-id                    Sort by id
+        -h, --help                       Show this help
+
 
 
 ## Development
