@@ -8,7 +8,7 @@ id = 0
 list_name = "default"
 dir_name = ENV["HOME"] + "/.local/todo"
 msg = ""
-sort = false
+sort = :date
 
 # parse new values
 parsed = OptionParser.parse! do |p|
@@ -18,7 +18,8 @@ parsed = OptionParser.parse! do |p|
   p.on("-r=ID", "--remove=ID", "Delete the task ID") { |i| mode = :rm; id = i.to_i32 }
   p.on("-l=NAME", "--list=NAME", "Filter with the list NAME") { |name| list_name = name }
   p.on("-d=DATE", "--date=DATE", "Set the date") { |d| date = d }
-  p.on("-s", "--sort", "Sort by date") { sort = true }
+  p.on("-s", "--sort", "Sort by date (by default)") { sort = :date }
+  p.on("-i", "--sort-id", "Sort by id") { sort = :id }
   p.on("-h", "--help", "Show this help") { puts p; exit }
   p.unknown_args { |args| (mode = :add if mode.nil?; msg = args.join(" ")) unless args.empty? }
 end
@@ -35,23 +36,24 @@ list = List.new(list_name, dir_name)
 list.load(dir_name)
 
 # effect
-if mode == :add
+case mode
+when :add
   todo = Todo.new(msg, date)
   list << todo
   puts "Add: #{todo.msg}\t#{todo.date}"
-elsif mode == :list
+when :list
   display = [] of Array(String)
   list.each_with_index { |todo, idx| display << [todo.date, "#{idx.to_s.rjust(4, ' ')} #{todo.date.rjust(12, ' ')} #{todo.msg}"] }
-  display.sort_by! { |e| e[0] } if sort
+  display.sort_by! { |e| e[0] } if sort == :date
   puts display.map { |e| e[1] }.join("\n")
-elsif mode == :rm
+when :rm
   list.rm(id)
   puts "Remove: #{id}"
-elsif mode == :update
+when :update
   list[id].msg = msg unless msg.empty?
   list[id].date = date
   puts "Update: #{id}"
-elsif mode == :archive
+when :archive
   todo = list[id]
   copy_task(todo, List.new("archives", dir_name).load)
   list.rm(id)
