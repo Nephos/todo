@@ -40,24 +40,26 @@ case mode
 when :add
   todo = Todo.new(msg, date)
   list << todo
-  puts "Add: #{todo.msg}\t#{todo.date}"
+  puts "ADD [#{list.size - 1}] #{todo.date} #{todo.msg}"
 when :list
   display = [] of Array(String)
   list.each_with_index { |todo, idx| display << [todo.date, "#{idx.to_s.rjust(4, ' ')} #{todo.date.rjust(12, ' ')} #{todo.msg}"] }
   display.sort_by! { |e| e[0] } if sort == :date
   puts display.map { |e| e[1] }.join("\n")
 when :rm
+  todo = list[id]
   list.rm(id)
-  puts "Remove: #{id}"
+  puts "RM [#{id}] #{todo.msg}"
 when :update
+  todo = list[id]
   list[id].msg = msg unless msg.empty?
   list[id].date = date
-  puts "Update: #{id}"
+  puts "UP [#{id}] = (#{list[id].date}) #{list[id].msg}"
 when :archive
   todo = list[id]
   copy_task(todo, List.new("archives", dir_name).load)
   list.rm(id)
-  puts "Archive: #{id}"
+  puts "ARCHIVE [#{id}] #{todo.msg}"
 else
   puts "Error"
 end
