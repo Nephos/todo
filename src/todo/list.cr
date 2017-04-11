@@ -1,7 +1,7 @@
 require "./todo"
 
-class List
-  getter todos : Array(Todo)
+class Todo::List
+  getter todos : Array(::Todo::Todo)
   property name : String
   property dir_name : String
 
@@ -11,7 +11,7 @@ class List
   delegate clear, to: @todos
 
   def initialize(@name, @dir_name, s : String = "")
-    @todos = Array(Todo).new
+    @todos = Array(::Todo::Todo).new
   end
 
   def to_s
@@ -34,12 +34,12 @@ class List
     rescue
       STDERR.puts "Not found #{path}. Create it."
       File.open(path, "a") { }
-      @todos = Array(Todo).new
+      @todos = Array(::Todo::Todo).new
     end
     self
   end
 
-  def <<(todo : Todo)
+  def <<(todo : ::Todo::Todo)
     @todos << todo
   end
 
@@ -52,6 +52,6 @@ class List
   end
 
   def self.parse(s : String)
-    s.split("\n").map { |l| Todo.new(l) }
+    s.split("\n").map { |l| ::Todo::Todo.new(l) }
   end
 end

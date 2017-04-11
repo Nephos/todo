@@ -1,4 +1,4 @@
-class Todo
+class Todo::Todo
   SEP = Char::ZERO
 
   getter msg : String
