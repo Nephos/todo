@@ -8,6 +8,7 @@ class List
   delegate map_with_index, to: @todos
   delegate each_with_index, to: @todos
   delegate size, to: @todos
+  delegate clear, to: @todos
 
   def initialize(@name, @dir_name, s : String = "")
     @todos = Array(Todo).new

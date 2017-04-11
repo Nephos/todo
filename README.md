@@ -1,6 +1,6 @@
 # todo
 
-write task in your terminal
+track your todo lists in your terminal
 
 ## Installation
 
@@ -21,9 +21,15 @@ write task in your terminal
         -d=DATE, --date=DATE             Set the date
         -s, --sort                       Sort by date (by default)
         -i, --sort-id                    Sort by id
+        --clear-all                      Remove everything in the list
         -h, --help                       Show this help
 
+### Date parsing
 
+There are several type of date format which are parsed automatically:
+
+- ``[Y]/<M>/<D>``: classic date format
+- ``D+<n>``: where n is the amount of days before the task ends
 
 ## Development
 

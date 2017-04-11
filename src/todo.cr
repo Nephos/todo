@@ -20,6 +20,7 @@ parsed = OptionParser.parse! do |p|
   p.on("-d=DATE", "--date=DATE", "Set the date") { |d| date = d }
   p.on("-s", "--sort", "Sort by date (by default)") { sort = :date }
   p.on("-i", "--sort-id", "Sort by id") { sort = :id }
+  p.on("--clear-all", "Remove everything in the list") { mode = :clear_all }
   p.on("-h", "--help", "Show this help") { puts p; exit }
   p.unknown_args { |args| (mode = :add if mode.nil?; msg = args.join(" ")) unless args.empty? }
 end
@@ -60,6 +61,8 @@ when :archive
   copy_task(todo, List.new("archives", dir_name).load)
   list.rm(id)
   puts "ARCHIVE [#{id}] #{todo.msg}"
+when :clear_all
+  list.clear
 else
   puts "Error"
 end
