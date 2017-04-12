@@ -25,11 +25,37 @@ track your todo lists in your terminal
         -h, --help                       Show this help
 
 ### Date parsing
-
 There are several type of date format which are parsed automatically:
 
 - ``[Y]/<M>/<D>``: classic date format
 - ``D+<n>``: where n is the amount of days before the task ends
+
+## Configuration
+
+### Hooks
+You can set some hooks, which will be executed. Write a yaml file ~/.config/todorc with the following structure:
+
+```yaml
+hooks:
+  before_load:
+    - some command to execute
+    - an other command
+  after_load:
+  before_add:
+  after_add:
+  before_list:
+  after_list:
+  before_rm:
+  after_rm:
+  before_update:
+  after_update:
+  before_archive:
+  after_archive:
+  before_clear_all:
+  after_clear_all:
+  before_save:
+  after_save:
+```
 
 ## Development
 
