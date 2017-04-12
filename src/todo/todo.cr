@@ -1,7 +1,7 @@
-require "json"
+require "yaml"
 
 class Todo::Todo
-  JSON.mapping(
+  YAML.mapping(
     msg: {type: String},
     date: {type: String, setter: false},
   )

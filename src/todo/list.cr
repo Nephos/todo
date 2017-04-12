@@ -1,11 +1,11 @@
-require "json"
+require "yaml"
 require "./todo"
 
 class Todo::List
   def self.load(path : String)
     # File.open(path, "a") { }
     data = (File.read(path) rescue "{\"todos\":[]}")
-    List.from_json(data)
+    List.from_yaml(data)
   end
 
   def self.load(list_name : String, dir_name : String)
@@ -13,7 +13,7 @@ class Todo::List
   end
 
   property name
-  JSON.mapping(
+  YAML.mapping(
     todos: {type: Array(Todo), setter: false, nilable: false},
   )
 
@@ -22,7 +22,7 @@ class Todo::List
   end
 
   def save(path : String)
-    File.write(path, self.to_json)
+    File.write(path, self.to_yaml)
     self
   end
 
