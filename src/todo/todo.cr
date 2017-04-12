@@ -1,9 +1,10 @@
-class Todo::Todo
-  SEP = Char::ZERO
+require "json"
 
-  getter msg : String
-  setter msg : String
-  getter date : String
+class Todo::Todo
+  JSON.mapping(
+    msg: {type: String},
+    date: {type: String, setter: false},
+  )
 
   DATE_SEP = "(?:[/\-])"
   # DATE_MATCH_1 = Regex.new "(?:(\d+)#{DATE_SEP})?(?:(\d+)#{DATE_SEP})(?:(\d+))"
@@ -38,9 +39,5 @@ class Todo::Todo
     data = s.split(SEP)
     self.msg = data[0]
     self.date = data[1]
-  end
-
-  def to_s
-    "#{msg}#{SEP}#{date}"
   end
 end

@@ -1,57 +1,45 @@
+require "json"
 require "./todo"
 
 class Todo::List
-  getter todos : Array(::Todo::Todo)
-  property name : String
-  property dir_name : String
-
-  delegate map_with_index, to: @todos
-  delegate each_with_index, to: @todos
-  delegate size, to: @todos
-  delegate clear, to: @todos
-
-  def initialize(@name, @dir_name, s : String = "")
-    @todos = Array(::Todo::Todo).new
+  def self.load(path : String)
+    # File.open(path, "a") { }
+    data = (File.read(path) rescue "{\"todos\":[]}")
+    List.from_json(data)
   end
 
-  def to_s
-    @todos.map(&.to_s).join("\n")
+  def self.load(list_name : String, dir_name : String)
+    List.load(File.expand_path(list_name, dir_name))
   end
 
-  def save(dir : String? = nil)
-    dir = dir || @dir_name
-    path = File.expand_path(name, dir)
-    File.write(path, self.to_s)
+  property name
+  JSON.mapping(
+    todos: {type: Array(Todo), setter: false, nilable: false},
+  )
+
+  def save(list_name : String, dir_name : String)
+    save(File.expand_path(list_name, dir_name))
+  end
+
+  def save(path : String)
+    File.write(path, self.to_json)
     self
   end
 
-  def load(dir : String? = nil)
-    dir = dir || @dir_name
-    path = File.expand_path(name, dir)
-    begin
-      data = File.read(path)
-      @todos = List.parse(data)
-    rescue
-      STDERR.puts "Not found #{path}. Create it."
-      File.open(path, "a") { }
-      @todos = Array(::Todo::Todo).new
-    end
-    self
-  end
-
-  def <<(todo : ::Todo::Todo)
-    @todos << todo
+  def <<(todo : Todo)
+    self.todos << todo
   end
 
   def [](id : Int32)
-    @todos[id]
+    self.todos[id]
   end
 
   def rm(id : Int32)
-    @todos.delete_at id rescue nil
+    self.todos.delete_at id rescue nil
   end
 
-  def self.parse(s : String)
-    s.split("\n").map { |l| ::Todo::Todo.new(l) }
-  end
+  delegate map_with_index, to: todos
+  delegate each_with_index, to: todos
+  delegate size, to: todos
+  delegate clear, to: todos
 end
