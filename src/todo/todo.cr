@@ -11,7 +11,9 @@ class Todo::Todo
   DATE_MATCH_2 = /^d\+(\d+)$/i
 
   def date=(value : String)
-    @date = if m = value.match DATE_MATCH_1
+    @date = if value.empty?
+              value
+            elsif m = value.match DATE_MATCH_1
               year = (m[1]? || Time.now.year - 2000).to_i
               "#{year}/#{m[2]}/#{m[3]}"
             elsif m = value.match DATE_MATCH_2
