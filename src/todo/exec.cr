@@ -9,10 +9,15 @@ module Todo::Exec
   end
 
   def run(mode, date, id, list_name, dir_name, msg, sort)
+    config = Config.new
+
     # new list
+    config.exec "before_load"
     list = List.new(list_name, dir_name)
     list.load(dir_name)
+    config.exec "after_load"
 
+    config.exec "before_#{mode}"
     # effect
     case mode
     when :add
@@ -43,7 +48,10 @@ module Todo::Exec
     else
       puts "Error"
     end
+    config.exec "after_#{mode}"
 
+    config.exec "before_save"
     list.save(dir_name)
+    config.exec "after_save"
   end
 end
