@@ -6,7 +6,7 @@ mode = nil
 date = ""
 id = 0
 list_name = "default"
-dir_name = ENV["HOME"] + "/.local/todo"
+dir_name = File.expand_path(".local/todo", ENV["HOME"])
 msg = ""
 sort = :date
 

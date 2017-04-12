@@ -1,5 +1,5 @@
 require "yaml"
-require "json"
+require "yaml"
 
 class Todo::Config
   FILE_PATH = File.expand_path ".config/todorc", ENV["HOME"]
