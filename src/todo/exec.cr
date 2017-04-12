@@ -3,16 +3,21 @@ require "./list"
 
 module Todo::Exec
   extend self
-  private def copy_task(task, list_to)
-    list_to << task
-    list_to.save
+  private def copy_task(task, list_to, dir_name)
+    list = List.load(list_to, dir_name)
+    list << task
+    list.save(list_to, dir_name)
   end
 
   def run(mode, date, id, list_name, dir_name, msg, sort)
-    # new list
-    list = List.new(list_name, dir_name)
-    list.load(dir_name)
+    config = Config.new
 
+    # new list
+    config.exec "before_load"
+    list = List.load(list_name, dir_name)
+    config.exec "after_load"
+
+    config.exec "before_#{mode}"
     # effect
     case mode
     when :add
@@ -35,7 +40,7 @@ module Todo::Exec
       puts "UP [#{id}] = (#{list[id].date}) #{list[id].msg}"
     when :archive
       todo = list[id]
-      copy_task(todo, List.new("archives", dir_name).load)
+      copy_task(todo, "archives", dir_name)
       list.rm(id)
       puts "ARCHIVE [#{id}] #{todo.msg}"
     when :clear_all
@@ -43,7 +48,10 @@ module Todo::Exec
     else
       puts "Error"
     end
+    config.exec "after_#{mode}"
 
-    list.save(dir_name)
+    config.exec "before_save"
+    list.save(list_name, dir_name)
+    config.exec "after_save"
   end
 end

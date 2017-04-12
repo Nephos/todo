@@ -1,9 +1,10 @@
-class Todo::Todo
-  SEP = Char::ZERO
+require "yaml"
 
-  getter msg : String
-  setter msg : String
-  getter date : String
+class Todo::Todo
+  YAML.mapping(
+    msg: {type: String},
+    date: {type: String, setter: false},
+  )
 
   DATE_SEP = "(?:[/\-])"
   # DATE_MATCH_1 = Regex.new "(?:(\d+)#{DATE_SEP})?(?:(\d+)#{DATE_SEP})(?:(\d+))"
@@ -11,7 +12,9 @@ class Todo::Todo
   DATE_MATCH_2 = /^d\+(\d+)$/i
 
   def date=(value : String)
-    @date = if m = value.match DATE_MATCH_1
+    @date = if value.empty?
+              value
+            elsif m = value.match DATE_MATCH_1
               year = (m[1]? || Time.now.year - 2000).to_i
               "#{year}/#{m[2]}/#{m[3]}"
             elsif m = value.match DATE_MATCH_2
@@ -36,9 +39,5 @@ class Todo::Todo
     data = s.split(SEP)
     self.msg = data[0]
     self.date = data[1]
-  end
-
-  def to_s
-    "#{msg}#{SEP}#{date}"
   end
 end
