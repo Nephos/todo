@@ -1,0 +1,6 @@
+version: 1.0
+shards:
+  colorful:
+    github: icyleaf/colorful.cr
+    commit: 556e12ead11dbe3e89cf562b061bcd6cab2e9a08
+

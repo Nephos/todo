@@ -11,3 +11,8 @@ targets:
 crystal: 0.20.5
 
 license: MIT
+
+dependencies:
+  colorful:
+    github: icyleaf/colorful.cr
+    branch: master
