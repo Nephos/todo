@@ -24,11 +24,12 @@ track your todo lists in your terminal
         -a=ID, --archive=ID              Move to archive
         -u=ID, --update=ID               Update the task ID
         -r=ID, --remove=ID               Delete the task ID
-        -l=NAME, --list=NAME             Filter with the list NAME
         -d=DATE, --date=DATE             Set the date
+        --clear-all                      Remove everything in the list
+        -l=NAME, --list=NAME             Filter with the list NAME
+        --directory=PATH                 Change the directory of the todolist
         -s, --sort                       Sort by date (by default)
         -i, --sort-id                    Sort by id
-        --clear-all                      Remove everything in the list
         -h, --help                       Show this help
 
 ### Date parsing
