@@ -4,6 +4,13 @@ track your todo lists in your terminal
 
 ## Installation
 
+### Requirements
+
+- crystal (see the shards.yml file)
+- shards
+
+### Build
+
     make
 
 ## Usage
