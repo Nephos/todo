@@ -27,10 +27,11 @@ module Todo::Exec
       puts "ADD [#{list.size - 1}] #{todo.date} #{todo.msg}"
     when :list
       display = [] of Array(String)
-      puts "  id |         date | message"
-      puts " --- | ------------ | ------ "
       list.each_with_index { |todo, idx| display << [todo.date, "#{idx.to_s.rjust(4, ' ').yellow} | #{todo.date.rjust(12, ' ').white_with_italic} | #{todo.msg}"] }
       display.sort_by! { |e| e[0] } if sort == :date
+      max_msg_len = list.reduce(7) { |l, r| [l, r.msg.size].max }
+      puts "  id |         date | message"
+      puts "---- | ------------ | #{"-" * max_msg_len} "
       puts display.map { |e| e[1] }.join("\n")
     when :rm
       todo = list[id]
