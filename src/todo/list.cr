@@ -40,6 +40,7 @@ class Todo::List
 
   delegate map_with_index, to: todos
   delegate each_with_index, to: todos
+  delegate reduce, to: todos
   delegate size, to: todos
   delegate clear, to: todos
 end
