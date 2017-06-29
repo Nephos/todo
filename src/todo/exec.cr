@@ -27,9 +27,15 @@ module Todo::Exec
       puts "ADD [#{list.size - 1}] #{todo.date} #{todo.msg}"
     when :list
       display = [] of Array(String)
-      list.each_with_index { |todo, idx| display << [todo.date, "#{idx.to_s.rjust(4, ' ').colorize.yellow} | #{todo.date.rjust(12, ' ').colorize.white.mode(:dim).to_s} | #{todo.msg}"] }
+      list.each_with_index do |todo, idx|
+        id = idx.to_s.rjust(4, ' ').colorize.yellow
+        date_time = Time.parse(todo.date, ::Todo::Todo::DATE_FORMAT) rescue nil
+        date_red = date_time && date_time < Time.now
+        date = todo.date.rjust(12, ' ').colorize.fore(date_red ? :red : :white).mode(date_red ? :bright : :dim).to_s
+        display << [todo.date, "#{id} | #{date} | #{todo.msg}"]
+      end
       display.sort_by! { |e| e[0] } if sort == :date
-      max_msg_len = list.reduce(7) { |l, r| [l, r.msg.size].max }
+      max_msg_len = [list.reduce(7) { |l, r| [l, r.msg.size].max }, 58].min
       puts "  id |         date | message"
       puts "---- | ------------ | #{"-" * max_msg_len} "
       puts display.map { |e| e[1] }.join("\n")

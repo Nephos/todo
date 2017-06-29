@@ -6,7 +6,8 @@ class Todo::Todo
     date: {type: String, setter: false},
   )
 
-  DATE_SEP = "(?:[/\-])"
+  DATE_FORMAT = "%y/%m/%d"
+  DATE_SEP    = "(?:[/\-])"
   # DATE_MATCH_1 = Regex.new "(?:(\d+)#{DATE_SEP})?(?:(\d+)#{DATE_SEP})(?:(\d+))"
   DATE_MATCH_1 = /^(?:(\d+)#{DATE_SEP})?(\d+)#{DATE_SEP}(\d+)$/
   DATE_MATCH_2 = /^d\+(\d+)$/i
@@ -18,7 +19,7 @@ class Todo::Todo
               year = (m[1]? || Time.now.year - 2000).to_i
               "#{year}/#{m[2]}/#{m[3]}"
             elsif m = value.match DATE_MATCH_2
-              (Time.now + m[1].to_i.days).to_s("%y/%m/%d")
+              (Time.now + m[1].to_i.days).to_s(DATE_FORMAT)
             else
               STDERR.puts "[WARN] \"#{value}\" is not a valid date"
               value
