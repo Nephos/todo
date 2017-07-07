@@ -4,22 +4,29 @@ require "./list"
 
 module Todo::Exec
   extend self
+
   private def copy_task(task, list_to, dir_name)
     list = List.load(list_to, dir_name)
     list << task
     list.save(list_to, dir_name)
   end
 
+  # :nodoc:
+  # calls config.exec with the arguments
+  private macro config_exec(config_to_exec)
+    config.exec {{config_to_exec}}, mode, date, id, list_name, dir_name, msg, sort
+  end
+
   def run(mode, date, id, list_name, dir_name, msg, sort)
     config = Config.new
 
-    # new list
-    config.exec "before_load"
+    # Prepare the list
+    config_exec "before_load"
     list = List.load(list_name, dir_name)
-    config.exec "after_load"
+    config_exec "after_load"
 
-    config.exec "before_#{mode}"
-    # effect
+    config_exec "before_#{mode}"
+    # Execute the operation
     case mode
     when :add
       todo = ::Todo::Todo.new(msg, date)
@@ -28,11 +35,11 @@ module Todo::Exec
     when :list
       display = [] of Array(String)
       list.each_with_index do |todo, idx|
-        id = idx.to_s.rjust(4, ' ').colorize.yellow
-        date_time = Time.parse(todo.date, ::Todo::Todo::DATE_FORMAT) rescue nil
-        date_red = date_time && date_time < Time.now
-        date = todo.date.rjust(12, ' ').colorize.fore(date_red ? :red : :white).mode(date_red ? :bright : :dim).to_s
-        display << [todo.date, "#{id} | #{date} | #{todo.msg}"]
+        p_id = idx.to_s.rjust(4, ' ').colorize.yellow
+        p_date_time = Time.parse(todo.date, ::Todo::Todo::DATE_FORMAT) rescue nil
+        p_date_red = p_date_time && p_date_time < Time.now
+        p_date = todo.date.rjust(12, ' ').colorize.fore(p_date_red ? :red : :white).mode(p_date_red ? :bright : :dim).to_s
+        display << [todo.date, "#{p_id} | #{p_date} | #{todo.msg}"]
       end
       display.sort_by! { |e| e[0] } if sort == :date
       max_msg_len = [list.reduce(7) { |l, r| [l, r.msg.size].max }, 58].min
@@ -58,10 +65,11 @@ module Todo::Exec
     else
       puts "Error"
     end
-    config.exec "after_#{mode}"
+    config_exec "after_#{mode}"
 
-    config.exec "before_save"
+    # Save the operation
+    config_exec "before_save"
     list.save(list_name, dir_name)
-    config.exec "after_save"
+    config_exec "after_save"
   end
 end

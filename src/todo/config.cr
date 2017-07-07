@@ -17,13 +17,19 @@ class Todo::Config
     Config.from_yaml("{}")
   end
 
-  def exec(hook_name : String)
+  def exec(hook_name : String, *args)
     hooks = self.hooks
     unless hooks.nil?
-      current = hooks[hook_name]?
-      unless current.nil?
-        current.each { |hook| d = `#{hook}`.strip; puts d unless d.empty? }
-      end
+      current = (hooks[hook_name]?)
+      exec_hooks(current, *args) unless (current.nil?)
+    end
+  end
+
+  private def exec_hooks(hooks : Array(String), *args)
+    hooks.each do |hook|
+      args_str = args.map { |e| "#{e.to_s.inspect}" }.join(" ")
+      d = `#{hook} #{args_str}`.strip
+      puts d unless d.empty?
     end
   end
 end

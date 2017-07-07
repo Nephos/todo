@@ -41,7 +41,9 @@ There are several type of date format which are parsed automatically:
 ## Configuration
 
 ### Hooks
-You can set some hooks, which will be executed. Write a yaml file ~/.config/todorc with the following structure:
+I you want someting to get executed right after or before an operation,
+you can setup some hooks.
+Write a yaml file `~/.config/todorc` with the following structure:
 
 ```yaml
 hooks:
@@ -64,6 +66,17 @@ hooks:
   before_save:
   after_save:
 ```
+
+Each hooks can take several parameters:
+
+- `mode`: current operation
+- `date`: date of the task
+- `id`: id of the task
+- `list_name`: name of the list of task
+- `dir_name`: directory where the task is registered
+- `msg`: body on the task
+- `sort`: type of sort (date, id, ...)
+
 
 ## Development
 
