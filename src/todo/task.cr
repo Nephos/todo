@@ -1,6 +1,6 @@
 require "yaml"
 
-class Todo::Todo
+class Todo::Task
   YAML.mapping(
     msg: {type: String},
     date: {type: String, setter: false},
