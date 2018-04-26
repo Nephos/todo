@@ -1,5 +1,5 @@
 require "yaml"
-require "./todo"
+require "./task"
 
 class Todo::List
   def self.load(path : String)
@@ -14,7 +14,7 @@ class Todo::List
 
   property name
   YAML.mapping(
-    todos: {type: Array(Todo), setter: false, nilable: false},
+    todos: {type: Array(Todo::Task), setter: false, nilable: false},
   )
 
   def save(list_name : String, dir_name : String)
@@ -26,7 +26,7 @@ class Todo::List
     self
   end
 
-  def <<(todo : Todo)
+  def <<(todo : Todo::Task)
     self.todos << todo
   end
 
