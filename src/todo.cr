@@ -24,6 +24,7 @@ parsed = OptionParser.parse! do |p|
 
   p.on("-s", "--sort", "Sort by date (by default)") { sort = :date }
   p.on("-i", "--sort-id", "Sort by id") { sort = :id }
+  p.on("-v", "--version", "Show version") { puts "Todo v#{Todo::VERSION}"; exit }
   p.on("-h", "--help", "Show this help") { puts p; exit }
 end
 Dir.mkdir_p(dir_name)
