@@ -37,7 +37,7 @@ module Todo::Exec
       display = [] of Array(String)
       list.each_with_index do |todo, idx|
         p_id = idx.to_s.rjust(4, ' ').colorize.yellow
-        p_date_time = Time.parse(todo.date, ::Todo::Task::DATE_FORMAT) rescue nil
+        p_date_time = Time.parse_local(todo.date, ::Todo::Task::DATE_FORMAT) rescue nil
         p_date_red = p_date_time && p_date_time < Time.now
         p_date = todo.date.rjust(12, ' ').colorize.fore(p_date_red ? :red : :white).mode(p_date_red ? :bright : :dim).to_s
         display << [todo.date, "#{p_id} | #{p_date} | #{todo.msg}"]

@@ -6,7 +6,7 @@ track your todo lists in your terminal
 
 ### Requirements
 
-- crystal (see the shards.yml file)
+- crystal (see the shards.yml file) (tested with v0.26.1)
 - shards
 
 ### Build
