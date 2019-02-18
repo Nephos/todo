@@ -1,3 +1,5 @@
+**Migrated to <https://git.sceptique.eu/Sceptique/todo>**
+
 # todo
 
 track your todo lists in your terminal
